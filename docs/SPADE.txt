@@ -1,0 +1,6 @@
+@inproceedings{park2019SPADE,
+  title={Semantic Image Synthesis with Spatially-Adaptive Normalization},
+  author={Park, Taesung and Ming-Yu Liu and Ting-Chun Wang and Jun-Yan Zhu},
+  booktitle={Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition},
+  year={2019}
+}

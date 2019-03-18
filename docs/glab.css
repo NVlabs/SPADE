@@ -1,0 +1,130 @@
+TABLE {
+	VERTICAL-ALIGN: top; BORDER-TOP-STYLE: none; BORDER-RIGHT-STYLE: none; BORDER-LEFT-STYLE: none; BORDER-BOTTOM-STYLE: none
+}
+
+BODY {
+	FONT-SIZE: small; COLOR: black; FONT-FAMILY: Georgia, "New Century Schoolbook", Times, serif; BACKGROUND-COLOR: white
+}
+IMG {
+	BORDER-TOP-STYLE: none; BORDER-RIGHT-STYLE: none; BORDER-LEFT-STYLE: none; BORDER-BOTTOM-STYLE: none
+}
+H1 {
+	FONT-WEIGHT: normal
+}
+H2 {
+	MARGIN-TOP: 12px; FONT-WEIGHT: normal; MARGIN-BOTTOM: 0px
+}
+H3 {
+	MARGIN-TOP: 6px; FONT-SIZE: small; MARGIN-BOTTOM: 0px
+}
+P {
+	MARGIN-TOP: 0px; font-size: 17px
+}
+A {
+	FONT-WEIGHT: bolder; TEXT-DECORATION: none
+}
+A:link {
+	COLOR: #990000
+}
+A:visited {
+	COLOR: #666666
+}
+LI {
+	MARGIN-TOP: 0px; font-size: 15px
+}
+UL {
+	MARGIN-TOP: 1px; MARGIN-BOTTOM: 15px
+}
+BLOCKQUOTE {
+	MARGIN-LEFT: 6em; TEXT-INDENT: -4em
+}
+BLOCKQUOTE P {
+	MARGIN-TOP: 0px; MARGIN-BOTTOM: 0px
+}
+#menu {
+	BACKGROUND-COLOR: transparent
+}
+#menu A {
+	DISPLAY: block; COLOR: #666666
+}
+#menu A:hover {
+	COLOR: white; BACKGROUND-COLOR: #990000
+}
+#menu TD {
+	PADDING-RIGHT: 0px; BORDER-TOP: #999999 1px solid; PADDING-LEFT: 0px; PADDING-BOTTOM: 0px; MARGIN: 0px; FONT: 10px/15px Verdana, Lucida, Arial, sans-serif; WIDTH: 100px; COLOR: black; PADDING-TOP: 0px; TEXT-ALIGN: center
+}
+#internalmenu TD {
+	PADDING-RIGHT: 0px; PADDING-LEFT: 0px; BACKGROUND: white; PADDING-BOTTOM: 0px; MARGIN: 0px; FONT: 10px/15px Verdana, Lucida, Arial, sans-serif; COLOR: black; PADDING-TOP: 0px; TEXT-ALIGN: right
+}
+#internalmenu A {
+	DISPLAY: block; COLOR: #666666
+}
+#content {
+	CLEAR: right
+}
+#sidebar {
+	PADDING-RIGHT: 25px; MARGIN-TOP: 0.5em; TEXT-ALIGN: right
+}
+#sidebar IMG {
+	MARGIN: 45px 0px 5px
+}
+#sidebar H2 {
+	FONT-WEIGHT: normal; FONT-SIZE: smaller; MARGIN: 0px
+}
+#primarycontent {
+	LINE-HEIGHT: 1.5; PADDING-TOP: 25px
+}
+#footer {
+	CLEAR: both; FONT-SIZE: x-small; PADDING-BOTTOM: 10px; PADDING-TOP: 20px
+}
+#projectlist IMG {
+	PADDING-RIGHT: 10px; PADDING-LEFT: 3px; PADDING-BOTTOM: 3px; VERTICAL-ALIGN: middle; PADDING-TOP: 3px
+}
+#projectlist TABLE {
+	PADDING-LEFT: 15px; PADDING-BOTTOM: 15px; BORDER-COLLAPSE: collapse; border-spacing: 0
+}
+#summary TD {
+	BORDER-RIGHT: 0px; PADDING-RIGHT: 5px; BORDER-TOP: #999999 1px solid; PADDING-LEFT: 5px; MARGIN: 0px; BORDER-LEFT: 0px
+}
+#people {
+	PADDING-LEFT: 10px; MARGIN-LEFT: 0px; LIST-STYLE-TYPE: none
+}
+DIV.abstract {
+	CLEAR: both; PADDING-RIGHT: 0px; BORDER-TOP: #999999 1px solid; MARGIN-TOP: 25px; PADDING-LEFT: 0px; PADDING-BOTTOM: 0px; PADDING-TOP: 0px
+}
+DIV.abstract PRE {
+	FONT-SIZE: xx-small; MARGIN: 0px
+}
+DIV.abstract H2 {
+
+}
+DIV.abstract IMG {
+	PADDING-RIGHT: 0px; PADDING-LEFT: 12px; FLOAT: right; PADDING-BOTTOM: 6px; PADDING-TOP: 6px
+}
+DIV.abstract LI {
+	MARGIN: 0px
+}
+DIV.timestamp {
+	DISPLAY: block; FONT-SIZE: x-small; COLOR: #999999; PADDING-TOP: 10px; BORDER-BOTTOM: #999999 1px solid; TEXT-ALIGN: right
+}
+.hide {
+	DISPLAY: none
+}
+#courses TD {
+	PADDING-RIGHT: 6px; PADDING-LEFT: 6px; PADDING-BOTTOM: 6px; PADDING-TOP: 6px
+}
+TD.coursename {
+	FONT-WEIGHT: bolder
+}
+
+
+@media only screen and (max-width: 1001px)  {
+	.full {
+		display:block;
+		width:50%;
+		align: middle;
+		padding: 10px;
+		margin-left: auto;
+		margin-right: auto;
+	}
+}
