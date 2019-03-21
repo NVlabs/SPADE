@@ -31,8 +31,9 @@ We propose spatially-adaptive normalization, a simple but effective layer for sy
 
 ### Paper
 
+<img style="float: left; padding: 10px; PADDING-RIGHT: 30px;" alt="paper thumbnail" src="https://nvlabs.github.io/SPADE/images/paper_thumbnail.jpg" width=170>
 [arxiv](https://arxiv.org/abs/1903.07291), 2019.
-[![paper thumbnail](https://nvlabs.github.io/SPADE/images/paper_thumbnail.jpg)](https://arxiv.org/abs/1903.07291)
+
 
 ### Citation
 
