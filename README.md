@@ -1,7 +1,7 @@
 # Semantic Image Synthesis with SPADE
 ![GauGAN demo](https://nvlabs.github.io/SPADE//images/ocean.gif)
 
-### [project page](https://https://nvlabs.github.io/SPADE/) |   [paper](https://arxiv.org/abs/1903.07291) | [GTC 2019 demo](https://youtu.be/p5U4NgVGAwg) | [Youtube](https://youtu.be/MXWm6w4E5q0)
+### [project page](https://nvlabs.github.io/SPADE/) |   [paper](https://arxiv.org/abs/1903.07291) | [GTC 2019 demo](https://youtu.be/p5U4NgVGAwg) | [Youtube](https://youtu.be/MXWm6w4E5q0)
 We will provide our PyTorch implementation and pretrained models for our paper very soon.
 
 Semantic Image Synthesis with Spatially-Adaptive Normalization.<br>
