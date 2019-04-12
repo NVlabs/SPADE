@@ -29,7 +29,7 @@ cd SPADE/
 
 This code requires PyTorch 1.0 and python 3+. Please install dependencies by
 ```bash
-pip install -f requirements.txt
+pip install -r requirements.txt
 ```
 
 This code also requires the Synchronized-BatchNorm-PyTorch rep.
