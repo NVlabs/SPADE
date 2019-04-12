@@ -1,68 +1,131 @@
+[![License CC BY-NC-SA 4.0](https://img.shields.io/badge/license-CC4.0-blue.svg)](https://raw.githubusercontent.com/nvlabs/SPADE/master/LICENSE.md)
+![Python 3.6](https://img.shields.io/badge/python-3.6-green.svg)
+
 # Semantic Image Synthesis with SPADE
 ![GauGAN demo](https://nvlabs.github.io/SPADE//images/ocean.gif)
 
-### [project page](https://nvlabs.github.io/SPADE/) |   [paper](https://arxiv.org/abs/1903.07291) | [GTC 2019 demo](https://youtu.be/p5U4NgVGAwg) | [Youtube](https://youtu.be/MXWm6w4E5q0)
-We will provide our PyTorch implementation and pretrained models for our paper very soon.
+### [Project page](https://nvlabs.github.io/SPADE/) |   [Paper](https://arxiv.org/abs/1903.07291) | [GTC 2019 demo](https://youtu.be/p5U4NgVGAwg) | [Youtube Demo of GauGAN](https://youtu.be/MXWm6w4E5q0)
 
 Semantic Image Synthesis with Spatially-Adaptive Normalization.<br>
 [Taesung Park](http://taesung.me/),  [Ming-Yu Liu](http://mingyuliu.net/), [Ting-Chun Wang](https://tcwang0509.github.io/),  and [Jun-Yan Zhu](http://people.csail.mit.edu/junyanz/).<br>
 In CVPR 2019 (Oral).
 
+### [License](https://raw.githubusercontent.com/nvlabs/SPADE/master/LICENSE.md)
 
+Copyright (C) 2019 NVIDIA Corporation.  
 
-In the meantime, please visit our [project webpage](https://nvlabs.github.io/SPADE/) for more information.
+All rights reserved.
+Licensed under the [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode) (**Attribution-NonCommercial-ShareAlike 4.0 International**) 
 
-## Overview
+The code is released for academic research use only. For commerical use, please contact [researchinquiries@nvidia.com](researchinquiries@nvidia.com).
 
-<img src="https://nvlabs.github.io/SPADE/images/method.png" width="97%">
+## Installation
 
-In many common normalization techniques such as Batch Normalization (<a href="[https://arxiv.org/abs/1502.03167](https://arxiv.org/abs/1502.03167)"><span style="font-weight:normal">Ioffe et al., 2015</span></a>), there are learned affine layers (as in <a href="[https://pytorch.org/docs/stable/nn.html?highlight=batchnorm2d#torch.nn.BatchNorm2d](https://pytorch.org/docs/stable/nn.html?highlight=batchnorm2d#torch.nn.BatchNorm2d)"><span style="font-weight:normal">PyTorch</span></a> and <a href="[https://www.tensorflow.org/api_docs/python/tf/layers/batch_normalization](https://www.tensorflow.org/api_docs/python/tf/layers/batch_normalization)"><span style="font-weight:normal">TensorFlow</span></a>) that are applied after the actual normalization step. In SPADE, the affine layer is <i>learned from semantic segmentation map</i>. This is similar to Conditional Normalization (<a href="[https://arxiv.org/abs/1707.00683](https://arxiv.org/abs/1707.00683)"><span style="font-weight:normal">De Vries et al., 2017</span></a> and <a href="[https://arxiv.org/abs/1610.07629](https://arxiv.org/abs/1610.07629)"><span style="font-weight:normal">Dumoulin et al., 2016</span></a>), except that the learned affine parameters now need to be spatially-adaptive, which means we will use different scaling and bias for each semantic label. Using this simple method, semantic signal can act on all layer outputs, unaffected by the normalization process which may lose such information. Moreover, because the semantic information is provided via SPADE layers, random latent vector may be used as input to the network, which can be used to manipulate the style of the generated images.
+Clone this repo.
+```bash
+git clone https://github.com/NVlabs/SPADE.git
+cd SPADE/
+```
 
-## Comparison to Existing Methods
+This code requires PyTorch 1.0 and python 3+. Please install dependencies by
+```bash
+pip install -f requirements.txt
+```
 
-![comparison to existing methods](https://nvlabs.github.io/SPADE/images/coco_comparison.jpg)
-SPADE outperforms existing methods on the [COCO-Stuff dataset](https://github.com/nightrome/cocostuff), which is more challenging than [the Cityscapes dataset](https://www.cityscapes-dataset.com/) due to more diverse scenes and labels.
+This code also requires the Synchronized-BatchNorm-PyTorch rep.
+```
+cd models/networks/
+git clone https://github.com/vacancy/Synchronized-BatchNorm-PyTorch
+cp Synchronized-BatchNorm-PyTorch/sync_batchnorm . -rf
+cd ../../
+```
 
-## More Results on Flickr Images
+To reproduce the results reported in the paper, you would need an NVIDIA DGX1 machine with 8 V100 GPUs.  
 
-![](https://nvlabs.github.io/SPADE/images/flickr.jpg)
+## Dataset Preparation
 
-Since SPADE works on diverse labels, it can be trained with [an existing semantic segmentation network](https://github.com/kazuto1011/deeplab-pytorch) to learn the reverse mapping from semantic maps to photos. These images were generated from SPADE trained on 40k images scraped from [Flickr](https://www.flickr.com/).
+For COCO-stuff, Cityscapes or ADE20K, the datasets must be downloaded beforehand. Please download them on the respective webpages. In case of COCO-stuff, we put a few sample images in this code repo. 
 
+There are different modes to load images by specifying `--preprocess_mode` along with `--load_size`. `--crop_size`. There are options such as `resize_and_crop`, which resizes the images into square images of side length `load_size` and randonly crops to `crop_size`. `scale_shortside_and_crop` scales the image to have shortside of length `load_size` and crops to `crop_size` x `crop_size` square. To see all modes, please use `python train.py --help` and take a look at `data/base_dataset.py`. By default at training phase, the images are randomy flipped horizontally. To prevent this use `--no_flip`. 
 
-<!-- ## Abstract
+## Generating Images Using Pretrained Model
 
-We propose spatially-adaptive normalization, a simple but effective layer for synthesizing photorealistic images given an input semantic layout. Previous methods directly feed the semantic layout as input to the network, which is then processed through stacks of convolution, normalization, and nonlinearity layers. We show that this is suboptimal because the normalization layers tend to wash away semantic information. To address the issue, we propose using the input layout for modulating the activations in normalization layers through a spatially-adaptive, learned transformation. Experiments on several challenging datasets demonstrate the advantage of the proposed method compared to existing approaches, regarding both visual fidelity and alignment with input layouts. Finally, our model allows users to easily control the style and content of synthesis results as well as create multi-modal results. -->
+Once the dataset is ready. The result images can be generated using pretrained models.
 
+1. Download the tar of the pretrained models from the [Google Drive Folder](https://drive.google.com/file/d/12gvlTbMvUcJewQlSEaZdeb2CdOB-b8kQ/view?usp=sharing), save it in 'checkpoints/', and run
 
+    ```
+    cd checkpoints
+    tar xvf checkpoints.tar.gz
+    cd ../    
+    ```
 
-<!-- ### Paper
+2. Generate images using the pretrained model.
+    ```bash
+    python test.py --name [type]_pretrained --dataset_mode [dataset] --dataroot [path_to_dataset]
+    ```
+    `[type]_pretrained` is the directory name of the checkpoint file downloaded in Step 1, which should be one of `coco_pretrained`, `ade20k_pretrained`, and `cityscapes_pretrained`. `[dataset]` can be one of `coco`, `ade20k`, and `cityscapes`, and `[path_to_dataset]`, is the path to the dataset. If you are running on CPU mode, append `--gpu_ids -1`.
 
-<img style="float: left; padding: 10px; PADDING-RIGHT: 30px;" alt="paper thumbnail" src="https://nvlabs.github.io/SPADE/images/paper_thumbnail.jpg" width=170>
+3. The outputs images are stored at `./results/[type]_pretrained/` by default. You can view them using the autogenerated HTML file in the directory.
 
-[arxiv](https://arxiv.org/abs/1903.07291), 2019.
- -->
+## Training New Models
+
+New models can be trained with following commands.
+
+1. Prepare dataset. To train on the datasets shown in the paper, you can download the datasets and use `--dataset_mode` option, which will choose which subclass of `BaseDataset` is loaded. For custom datasets, the easiest way is to use `./data/custom_dataset.py` by specifying the option `--dataset_mode custom`, along with `--label_dir [path_to_labels] --image_dir [path_to_images]`. You also need to specify options such as `--label_nc` for the number of label classes in the dataset, `--contain_dontcare_label` to specify whether it has unknown label, or `--no_instance` to denote the dataset doesn't have instance maps. 
+
+2. Train.
+
+```bash
+# To train on the Facades or COCO dataset, for example.
+python train.py --name [experiment_name] --dataset_mode facades --dataroot [path_to_facades_dataset]
+python train.py --name [experiment_name] --dataset_mode coco --dataroot [path_to_coco_dataset]
+
+# To train on your own custom dataset
+python train.py --name [experiment_name] --dataset_mode custom --label_dir [path_to_labels] -- image_dir [path_to_images] --label_nc [num_labels]
+```
+
+There are many options you can specify. Please use `python train.py --help`. The specified options are printed to the console. To specify the number of GPUs to utilize, use `--gpu_ids`. If you want to use the second and third GPUs for example, use `--gpu_ids 1,2`.
+
+To log training, use `--tf_log` for Tensorboard. The logs are stored at `[checkpoints_dir]/[name]/logs`. 
+
+## Testing
+
+Testing is similar to testing pretrained models.
+
+```bash
+python test.py --name [name_of_experiment] --dataset_mode [dataset_mode] --dataroot [path_to_dataset]
+```
+
+Use `--results_dir` to specify the output directory. `--how_many` will specify the maximum number of images to generate. By default, it loads the latest checkpoint. It can be changed using `--which_epoch`.
+
+## Code Structure
+
+- `train.py`, `test.py`: entry point for training and testing.
+- `trainers/pix2pix_trainer.py`: harnesses and reports the progress of training.
+- `models/pix2pix_model.py`: creates the networks, and compute the losses
+- `models/networks/`: defines the architecture of all models
+- `options/`: creates option lists using `argparse` package. More individuals are dynamically added in other files as well. Please see the section below.
+- `data/`: defines the class for loading images and label maps. 
+
+## Options
+
+This code repo contains many options. Some options belong to only one specific model, and some options have different default values depending on other options. To address this, the `BaseOption` class dynamically loads and sets options depending on what model, network, and datasets are used. This is done by calling the static method `modify_commandline_options` of various classes. It takes in `parser` of argparse package and modifies the list of options. For example, since COCO-stuff dataset contain a special label "unknown", when COCO-stuff dataset is used, it sets `--contain_dontcare_label` automatically at `data/coco_dataset.py`. You can take a look at `def gather_options()` of `options/base_options.py`, or `models/network/__init__.py` to get a sense of how this works. 
+
+## VAE-Style Training with an Encoder For Style Control and Multi-Modal Outputs
+
+To train our model along with an image encoder to enable multi-modal outputs as in Figure 15 of the [paper](https://arxiv.org/pdf/1903.07291.pdf), please use `--use_vae`. The model will create `netE` in addition to `netG` and `netD` and train with KL-Divergence loss. 
 
 ### Citation
 If you use this code for your research, please cite our papers.
 ```
 @inproceedings{park2019SPADE,
   title={Semantic Image Synthesis with Spatially-Adaptive Normalization},
-  author={Park, Taesung and Ming-Yu Liu and Ting-Chun Wang and Jun-Yan Zhu},
+  author={Park, Taesung and Liu, Ming-Yu and Wang, Ting-Chun and Zhu, Jun-Yan},
   booktitle={Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition},
   year={2019}
 }
 ```
 
-
-## Related Work
-- A. Hertzmann, C. Jacobs, N. Oliver, B. Curless, D. Salesin. ["Image Analogies"](https://www.mrl.nyu.edu/publications/image-analogies/analogies-fullres.pdf), in SIGGRAPH 2001.
-- V. Dumoulin, J. Shlens, and M. Kudlur.  ["A learned representation for artistic style"](https://arxiv.org/abs/1610.07629), in ICLR 2016.
-- H. De Vries, F. Strub, J. Mary, H. Larochelle, O. Pietquin, and A. C. Courville.  ["Modulating early visual processing by language"](https://arxiv.org/abs/1707.00683), in NeurIPS 2017.
-- T. Wang, M. Liu, J.-Y. Zhu, A. Tao, J. Kautz, and B. Catanzaro.  ["High-Resolution Image Synthesis and Semantic Manipulation with Conditional GANs"](https://tcwang0509.github.io/pix2pixHD/), in CVPR 2018. (pix2pixHD)
-- P. Isola, J.-Y. Zhu, T. Zhou, and A. A. Efros.  ["Image-to-Image Translation with Conditional Adversarial Networks"](https://phillipi.github.io/pix2pix/), in CVPR 2017. (pix2pix)
-- Q. Chen and V. Koltun.  ["Photographic image synthesis with cascaded refinement networks.](https://cqf.io/ImageSynthesis/), ICCV 2017. (CRN)
-
-
-## Acknowledgement
-We thank Alyosha Efros and Jan Kautz for insightful advice. Taesung Park contributed to the work during his internship at NVIDIA. His Ph.D. is supported by the Samsung Scholarship.
+## Acknowledgments
+This code borrows heavily from pix2pixHD. We thank Jiayuan Mao for his Synchronized Batch Normalization code. 
