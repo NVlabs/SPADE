@@ -7,6 +7,7 @@ import os.path
 from data.pix2pix_dataset import Pix2pixDataset
 from data.image_folder import make_dataset
 
+
 class FacadesDataset(Pix2pixDataset):
 
     @staticmethod
@@ -29,11 +30,10 @@ class FacadesDataset(Pix2pixDataset):
 
         label_dir = os.path.join(root, '%s_label' % phase)
         label_paths = make_dataset(label_dir, recursive=False, read_cache=True)
-        
+
         image_dir = os.path.join(root, '%s_img' % phase)
         image_paths = make_dataset(image_dir, recursive=False, read_cache=True)
 
         instance_paths = []
 
         return label_paths, image_paths, instance_paths
-
