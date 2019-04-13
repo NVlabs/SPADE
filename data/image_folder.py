@@ -22,6 +22,7 @@ IMG_EXTENSIONS = [
 def is_image_file(filename):
     return any(filename.endswith(extension) for extension in IMG_EXTENSIONS)
 
+
 def make_dataset_rec(dir, images):
     assert os.path.isdir(dir), '%s is not a valid directory' % dir
 
@@ -30,6 +31,7 @@ def make_dataset_rec(dir, images):
             if is_image_file(fname):
                 path = os.path.join(root, fname)
                 images.append(path)
+
 
 def make_dataset(dir, recursive=False, read_cache=False, write_cache=False):
     images = []
@@ -45,12 +47,12 @@ def make_dataset(dir, recursive=False, read_cache=False, write_cache=False):
         make_dataset_rec(dir, images)
     else:
         assert os.path.isdir(dir) or os.path.islink(dir), '%s is not a valid directory' % dir
-        
+
         for root, dnames, fnames in sorted(os.walk(dir)):
             for fname in fnames:
                 if is_image_file(fname):
                     path = os.path.join(root, fname)
-                    images.append(path)    
+                    images.append(path)
 
     if write_cache:
         filelist_cache = os.path.join(dir, 'files.list')
@@ -58,7 +60,7 @@ def make_dataset(dir, recursive=False, read_cache=False, write_cache=False):
             for path in images:
                 f.write("%s\n" % path)
             print('wrote filelist cache at %s' % filelist_cache)
-            
+
     return images
 
 

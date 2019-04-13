@@ -8,11 +8,12 @@ from models.pix2pix_model import Pix2PixModel
 
 
 class Pix2PixTrainer():
-    """ 
-    Trainer creates the model and optimizers, and uses them to 
-    updates the weights of the network while reporting losses 
-    and the latest visuals to visualize the progress in training. 
     """
+    Trainer creates the model and optimizers, and uses them to
+    updates the weights of the network while reporting losses
+    and the latest visuals to visualize the progress in training.
+    """
+
     def __init__(self, opt):
         self.opt = opt
         self.pix2pix_model = Pix2PixModel(opt)
@@ -22,7 +23,7 @@ class Pix2PixTrainer():
             self.pix2pix_model_on_one_gpu = self.pix2pix_model.module
         else:
             self.pix2pix_model_on_one_gpu = self.pix2pix_model
-            
+
         self.generated = None
         if opt.isTrain:
             self.optimizer_G, self.optimizer_D = \
@@ -58,10 +59,10 @@ class Pix2PixTrainer():
     def save(self, epoch):
         self.pix2pix_model_on_one_gpu.save(epoch)
 
+    ##################################################################
+    # Helper functions
+    ##################################################################
 
-    ##################################################################
-    ## Helper functions
-    ##################################################################
     def update_learning_rate(self, epoch):
         if epoch > self.opt.niter:
             lrd = self.opt.lr / self.opt.niter_decay
@@ -83,9 +84,3 @@ class Pix2PixTrainer():
                 param_group['lr'] = new_lr_G
             print('update learning rate: %f -> %f' % (self.old_lr, new_lr))
             self.old_lr = new_lr
-
-
-            
-
-    
-
