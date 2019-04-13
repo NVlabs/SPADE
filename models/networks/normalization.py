@@ -77,7 +77,7 @@ class SPADE(nn.Module):
         elif param_free_norm_type == 'syncbatch':
             self.param_free_norm = SynchronizedBatchNorm2d(norm_nc, affine=False)
         elif param_free_norm_type == 'batch':
-            self.param_free_norm = BatchNorm2d(norm_nc, affine=False)
+            self.param_free_norm = nn.BatchNorm2d(norm_nc, affine=False)
         else:
             raise ValueError('%s is not a recognized param-free norm type in SPADE'
                              % param_free_norm_type)
