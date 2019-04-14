@@ -5,10 +5,9 @@ Licensed under the CC BY-NC-SA 4.0 license (https://creativecommons.org/licenses
 
 import torch
 import torch.nn as nn
-from torch.autograd import Variable
 import torch.nn.functional as F
-import numpy as np
 from models.networks.architecture import VGG19
+
 
 # Defines the GAN loss which uses either LSGAN or the regular GAN.
 # When LSGAN is used, it is basically same as MSELoss,
@@ -56,16 +55,15 @@ class GANLoss(nn.Module):
         return self.zero_tensor.expand_as(input)
 
     def loss(self, input, target_is_real, for_discriminator=True):
-        if self.gan_mode == 'original': # cross entropy loss
+        if self.gan_mode == 'original':  # cross entropy loss
             target_tensor = self.get_target_tensor(input, target_is_real)
-            batchsize = input.size(0)
             loss = F.binary_cross_entropy_with_logits(input, target_tensor)
             return loss
-        elif self.gan_mode == 'ls':     
+        elif self.gan_mode == 'ls':
             target_tensor = self.get_target_tensor(input, target_is_real)
             return F.mse_loss(input, target_tensor)
         elif self.gan_mode == 'hinge':
-            if for_discriminator:                
+            if for_discriminator:
                 if target_is_real:
                     minval = torch.min(input - 1, self.get_zero_tensor(input))
                     loss = -torch.mean(minval)
@@ -84,8 +82,8 @@ class GANLoss(nn.Module):
                 return input.mean()
 
     def __call__(self, input, target_is_real, for_discriminator=True):
-        ## computing loss is a bit complicated because |input| may not be
-        ## a tensor, but list of tensors in case of multiscale discriminator
+        # computing loss is a bit complicated because |input| may not be
+        # a tensor, but list of tensors in case of multiscale discriminator
         if isinstance(input, list):
             loss = 0
             for pred_i in input:
@@ -100,26 +98,23 @@ class GANLoss(nn.Module):
             return self.loss(input, target_is_real, for_discriminator)
 
 
-## Perceptual loss that uses a pretrained VGG network
+# Perceptual loss that uses a pretrained VGG network
 class VGGLoss(nn.Module):
     def __init__(self, gpu_ids):
-        super(VGGLoss, self).__init__()        
+        super(VGGLoss, self).__init__()
         self.vgg = VGG19().cuda()
         self.criterion = nn.L1Loss()
-        self.weights = [1.0/32, 1.0/16, 1.0/8, 1.0/4, 1.0]        
+        self.weights = [1.0 / 32, 1.0 / 16, 1.0 / 8, 1.0 / 4, 1.0]
 
-    def forward(self, x, y):              
+    def forward(self, x, y):
         x_vgg, y_vgg = self.vgg(x), self.vgg(y)
         loss = 0
         for i in range(len(x_vgg)):
-            loss += self.weights[i] * self.criterion(x_vgg[i], y_vgg[i].detach())        
+            loss += self.weights[i] * self.criterion(x_vgg[i], y_vgg[i].detach())
         return loss
 
-    
-## KL Divergence loss used in VAE with an image encoder
+
+# KL Divergence loss used in VAE with an image encoder
 class KLDLoss(nn.Module):
     def forward(self, mu, logvar):
         return -0.5 * torch.sum(1 + logvar - mu.pow(2) - logvar.exp())
-    
-
-
