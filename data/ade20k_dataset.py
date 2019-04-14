@@ -46,7 +46,7 @@ class ADE20KDataset(Pix2pixDataset):
         return label_paths, image_paths, instance_paths
 
     # In ADE20k, 'unknown' label is of value 0.
-    # Change the 'unknown' label to 255 to match other datasets.
+    # Change the 'unknown' label to the last label to match other datasets.
     def postprocess(self, input_dict):
         label = input_dict['label']
         label = label - 1
