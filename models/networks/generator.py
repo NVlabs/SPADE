@@ -19,7 +19,7 @@ class SPADEGenerator(BaseNetwork):
         parser.add_argument('--num_upsampling_layers',
                             choices=('normal', 'more', 'most'), default='normal',
                             help="If 'more', adds upsampling layer between the two middle resnet blocks. If 'most', also add one more upsampling + resnet layer at the end of the generator")
-        
+
         return parser
 
     def __init__(self, opt):
@@ -31,28 +31,28 @@ class SPADEGenerator(BaseNetwork):
 
         if opt.use_vae:
             # In case of VAE, we will sample from random z vector
-            self.fc = nn.Linear(opt.z_dim, 16*nf*self.sw*self.sh)            
+            self.fc = nn.Linear(opt.z_dim, 16 * nf * self.sw * self.sh)
         else:
             # Otherwise, we make the network deterministic by starting with
             # downsampled segmentation map instead of random z
-            self.fc = nn.Conv2d(self.opt.semantic_nc, 16*nf, 3, padding=1)
-            
-        self.head_0 = SPADEResnetBlock(16*nf, 16*nf, opt)
+            self.fc = nn.Conv2d(self.opt.semantic_nc, 16 * nf, 3, padding=1)
 
-        self.G_middle_0 = SPADEResnetBlock(16*nf, 16*nf, opt)
-        self.G_middle_1 = SPADEResnetBlock(16*nf, 16*nf, opt)
+        self.head_0 = SPADEResnetBlock(16 * nf, 16 * nf, opt)
 
-        self.up_0 = SPADEResnetBlock(16*nf, 8*nf, opt)
-        self.up_1 = SPADEResnetBlock(8*nf, 4*nf, opt)
-        self.up_2 = SPADEResnetBlock(4*nf, 2*nf, opt)
-        self.up_3 = SPADEResnetBlock(2*nf, 1*nf, opt)
+        self.G_middle_0 = SPADEResnetBlock(16 * nf, 16 * nf, opt)
+        self.G_middle_1 = SPADEResnetBlock(16 * nf, 16 * nf, opt)
+
+        self.up_0 = SPADEResnetBlock(16 * nf, 8 * nf, opt)
+        self.up_1 = SPADEResnetBlock(8 * nf, 4 * nf, opt)
+        self.up_2 = SPADEResnetBlock(4 * nf, 2 * nf, opt)
+        self.up_3 = SPADEResnetBlock(2 * nf, 1 * nf, opt)
 
         final_nc = nf
 
         if opt.num_upsampling_layers == 'most':
-            self.up_4 = SPADEResnetBlock(1*nf, nf//2, opt)
-            final_nc = nf//2
- 
+            self.up_4 = SPADEResnetBlock(1 * nf, nf // 2, opt)
+            final_nc = nf // 2
+
         self.conv_img = nn.Conv2d(final_nc, 3, 3, padding=1)
 
         self.up = nn.Upsample(scale_factor=2)
@@ -70,19 +70,19 @@ class SPADEGenerator(BaseNetwork):
 
         sw = opt.crop_size // (2**num_up_layers)
         sh = round(sw / opt.aspect_ratio)
-            
-        return sw, sh    
+
+        return sw, sh
 
     def forward(self, input, z=None):
         seg = input
-        
+
         if self.opt.use_vae:
             # we sample z from unit normal and reshape the tensor
             if z is None:
                 z = torch.randn(input.size(0), self.opt.z_dim,
                                 dtype=torch.float32, device=input.get_device())
             x = self.fc(z)
-            x = x.view(-1, 16*self.opt.ngf, self.sh, self.sw)
+            x = x.view(-1, 16 * self.opt.ngf, self.sh, self.sw)
         else:
             # we downsample segmap and run convolution
             x = F.interpolate(seg, size=(self.sh, self.sw))
@@ -96,7 +96,7 @@ class SPADEGenerator(BaseNetwork):
         if self.opt.num_upsampling_layers == 'more' or \
            self.opt.num_upsampling_layers == 'most':
             x = self.up(x)
-            
+
         x = self.G_middle_1(x, seg)
 
         x = self.up(x)
@@ -118,11 +118,10 @@ class SPADEGenerator(BaseNetwork):
         return x
 
 
-    
 class Pix2PixHDGenerator(BaseNetwork):
     @staticmethod
     def modify_commandline_options(parser, is_train):
-        parser.add_argument('--resnet_n_downsample', type=int, default=4, help='number of downsampling layers in netG') 
+        parser.add_argument('--resnet_n_downsample', type=int, default=4, help='number of downsampling layers in netG')
         parser.add_argument('--resnet_n_blocks', type=int, default=9, help='number of residual blocks in the global generator network')
         parser.add_argument('--resnet_kernel_size', type=int, default=3,
                             help='kernel size of the resnet block')
@@ -130,7 +129,6 @@ class Pix2PixHDGenerator(BaseNetwork):
                             help='kernel size of the first convolution')
         parser.set_defaults(norm_G='instance')
         return parser
-
 
     def __init__(self, opt):
         super().__init__()
@@ -141,14 +139,14 @@ class Pix2PixHDGenerator(BaseNetwork):
 
         model = []
 
-        ## initial conv
+        # initial conv
         model += [nn.ReflectionPad2d(opt.resnet_initial_kernel_size // 2),
                   norm_layer(nn.Conv2d(input_nc, opt.ngf,
                                        kernel_size=opt.resnet_initial_kernel_size,
                                        padding=0)),
                   activation]
-        
-        ### downsample
+
+        # downsample
         mult = 1
         for i in range(opt.resnet_n_downsample):
             model += [norm_layer(nn.Conv2d(opt.ngf * mult, opt.ngf * mult * 2,
@@ -156,16 +154,14 @@ class Pix2PixHDGenerator(BaseNetwork):
                       activation]
             mult *= 2
 
-
-        ### resnet blocks
+        # resnet blocks
         for i in range(opt.resnet_n_blocks):
             model += [ResnetBlock(opt.ngf * mult,
                                   norm_layer=norm_layer,
                                   activation=activation,
                                   kernel_size=opt.resnet_kernel_size)]
-            
-        
-        ### upsample         
+
+        # upsample
         for i in range(opt.resnet_n_downsample):
             nc_in = int(opt.ngf * mult)
             nc_out = int((opt.ngf * mult) / 2)
@@ -184,5 +180,3 @@ class Pix2PixHDGenerator(BaseNetwork):
 
     def forward(self, input, z=None):
         return self.model(input)
-
-

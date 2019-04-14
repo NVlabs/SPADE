@@ -55,7 +55,6 @@ class HTML:
                             p(txt.encode('utf-8'))
 
     def save(self):
-        #html_file = '%s/%s' % (self.web_dir, self.html_name)
         html_file = os.path.join(self.web_dir, self.html_name)
         f = open(html_file, 'wt')
         f.write(self.doc.render())

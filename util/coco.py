@@ -3,13 +3,14 @@ Copyright (C) 2019 NVIDIA Corporation.  All rights reserved.
 Licensed under the CC BY-NC-SA 4.0 license (https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode).
 """
 
+
 def id2label(id):
     if id == 182:
         id = 0
     else:
         id = id + 1
     labelmap = \
-        {0: 'unlabeled', 
+        {0: 'unlabeled',
          1: 'person',
          2: 'bicycle',
          3: 'car',
@@ -100,8 +101,8 @@ def id2label(id):
          88: 'teddy bear',
          89: 'hair drier',
          90: 'toothbrush',
-         91: 'hair brush',  ## Last class of Thing
-         92: 'banner',  ## Beginning of Stuff
+         91: 'hair brush',  # Last class of Thing
+         92: 'banner',  # Beginning of Stuff
          93: 'blanket',
          94: 'branch',
          95: 'bridge',
