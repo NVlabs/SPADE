@@ -3,14 +3,7 @@ Copyright (C) 2019 NVIDIA Corporation.  All rights reserved.
 Licensed under the CC BY-NC-SA 4.0 license (https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode).
 """
 
-import sys
-import torch
-import re
 import torch.nn as nn
-from collections import OrderedDict
-import os.path
-import functools
-from torch.autograd import Variable
 import numpy as np
 import torch.nn.functional as F
 from models.networks.base_network import BaseNetwork
@@ -31,7 +24,7 @@ class MultiscaleDiscriminator(BaseNetwork):
         subnetD = util.find_class_in_module(opt.netD_subarch + 'discriminator',
                                             'models.networks.discriminator')
         subnetD.modify_commandline_options(parser, is_train)
-        
+
         return parser
 
     def __init__(self, opt):
@@ -55,8 +48,8 @@ class MultiscaleDiscriminator(BaseNetwork):
                             stride=2, padding=[1, 1],
                             count_include_pad=False)
 
-    ## Returns list of lists of discriminator outputs.
-    ## The final result is of size opt.num_D x opt.n_layers_D
+    # Returns list of lists of discriminator outputs.
+    # The final result is of size opt.num_D x opt.n_layers_D
     def forward(self, input):
         result = []
         get_intermediate_features = not self.opt.no_ganFeat_loss
@@ -69,7 +62,7 @@ class MultiscaleDiscriminator(BaseNetwork):
 
         return result
 
-    
+
 # Defines the PatchGAN discriminator with the specified arguments.
 class NLayerDiscriminator(BaseNetwork):
     @staticmethod
@@ -83,10 +76,10 @@ class NLayerDiscriminator(BaseNetwork):
         self.opt = opt
 
         kw = 4
-        padw = int(np.ceil((kw-1.0)/2))
+        padw = int(np.ceil((kw - 1.0) / 2))
         nf = opt.ndf
         input_nc = self.compute_D_input_nc(opt)
-        
+
         norm_layer = get_nonspade_norm_layer(opt, opt.norm_D)
         sequence = [[nn.Conv2d(input_nc, nf, kernel_size=kw, stride=2, padding=padw),
                      nn.LeakyReLU(0.2, False)]]
@@ -97,14 +90,14 @@ class NLayerDiscriminator(BaseNetwork):
             sequence += [[norm_layer(nn.Conv2d(nf_prev, nf, kernel_size=kw,
                                                stride=2, padding=padw)),
                           nn.LeakyReLU(0.2, False)
-            ]]
+                          ]]
 
         sequence += [[nn.Conv2d(nf, 1, kernel_size=kw, stride=1, padding=padw)]]
 
-        ## We divide the layers into groups to extract intermediate layer outputs
+        # We divide the layers into groups to extract intermediate layer outputs
         for n in range(len(sequence)):
-            self.add_module('model'+str(n), nn.Sequential(*sequence[n]))
-        
+            self.add_module('model' + str(n), nn.Sequential(*sequence[n]))
+
     def compute_D_input_nc(self, opt):
         input_nc = opt.label_nc + opt.output_nc
         if opt.contain_dontcare_label:
@@ -124,6 +117,3 @@ class NLayerDiscriminator(BaseNetwork):
             return results[1:]
         else:
             return results[-1]
-    
-
-

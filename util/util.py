@@ -15,17 +15,20 @@ import dill as pickle
 import util.coco
 
 
-def save_obj(obj, name ):
+def save_obj(obj, name):
     with open(name, 'wb') as f:
         pickle.dump(obj, f, pickle.HIGHEST_PROTOCOL)
 
-def load_obj(name ):
+
+def load_obj(name):
     with open(name, 'rb') as f:
         return pickle.load(f)
 
 # returns a configuration for creating a generator
 # |default_opt| should be the opt of the current experiment
 # |**kwargs|: if any configuration should be overriden, it can be specified here
+
+
 def copyconf(default_opt, **kwargs):
     conf = argparse.Namespace(**vars(default_opt))
     for key in kwargs:
@@ -35,7 +38,7 @@ def copyconf(default_opt, **kwargs):
 
 
 def tile_images(imgs, picturesPerRow=4):
-    """ Code borrowed from 
+    """ Code borrowed from
     https://stackoverflow.com/questions/26521365/cleanly-tile-numpy-array-of-images-stored-in-a-flattened-1d-format/26521997
     """
 
@@ -45,12 +48,12 @@ def tile_images(imgs, picturesPerRow=4):
     else:
         rowPadding = picturesPerRow - imgs.shape[0] % picturesPerRow
     if rowPadding > 0:
-        imgs = np.concatenate([imgs, np.zeros((rowPadding, *imgs.shape[1:]), dtype=imgs.dtype)], axis=0)    
+        imgs = np.concatenate([imgs, np.zeros((rowPadding, *imgs.shape[1:]), dtype=imgs.dtype)], axis=0)
 
     # Tiling Loop (The conditionals are not necessary anymore)
     tiled = []
     for i in range(0, imgs.shape[0], picturesPerRow):
-        tiled.append(np.concatenate([imgs[j] for j in range(i, i+picturesPerRow)], axis=1))
+        tiled.append(np.concatenate([imgs[j] for j in range(i, i + picturesPerRow)], axis=1))
 
     tiled = np.concatenate(tiled, axis=0)
     return tiled
@@ -64,7 +67,7 @@ def tensor2im(image_tensor, imtype=np.uint8, normalize=True, tile=False):
         for i in range(len(image_tensor)):
             image_numpy.append(tensor2im(image_tensor[i], imtype, normalize))
         return image_numpy
-    
+
     if image_tensor.dim() == 4:
         # transform each image in the batch
         images_np = []
@@ -85,11 +88,12 @@ def tensor2im(image_tensor, imtype=np.uint8, normalize=True, tile=False):
     if normalize:
         image_numpy = (np.transpose(image_numpy, (1, 2, 0)) + 1) / 2.0 * 255.0
     else:
-        image_numpy = np.transpose(image_numpy, (1, 2, 0)) * 255.0      
+        image_numpy = np.transpose(image_numpy, (1, 2, 0)) * 255.0
     image_numpy = np.clip(image_numpy, 0, 255)
-    if image_numpy.shape[2] == 1:        
-        image_numpy = image_numpy[:,:,0]
+    if image_numpy.shape[2] == 1:
+        image_numpy = image_numpy[:, :, 0]
     return image_numpy.astype(imtype)
+
 
 # Converts a one-hot tensor into a colorful label map
 def tensor2label(label_tensor, n_label, imtype=np.uint8, tile=False):
@@ -107,18 +111,19 @@ def tensor2label(label_tensor, n_label, imtype=np.uint8, tile=False):
         else:
             images_np = images_np[0]
             return images_np
-    
+
     if label_tensor.dim() == 1:
         return np.zeros((64, 64, 3), dtype=np.uint8)
     if n_label == 0:
         return tensor2im(label_tensor, imtype)
-    label_tensor = label_tensor.cpu().float()    
+    label_tensor = label_tensor.cpu().float()
     if label_tensor.size()[0] > 1:
         label_tensor = label_tensor.max(0, keepdim=True)[1]
     label_tensor = Colorize(n_label)(label_tensor)
     label_numpy = np.transpose(label_tensor.numpy(), (1, 2, 0))
     result = label_numpy.astype(imtype)
     return result
+
 
 def save_image(image_numpy, image_path, create_dir=False):
     if create_dir:
@@ -129,8 +134,9 @@ def save_image(image_numpy, image_path, create_dir=False):
         image_numpy = np.repeat(image_numpy, 3, 2)
     image_pil = Image.fromarray(image_numpy)
 
-    ## save to png
+    # save to png
     image_pil.save(image_path.replace('.jpg', '.png'))
+
 
 def mkdirs(paths):
     if isinstance(paths, list) and not isinstance(paths, str):
@@ -139,12 +145,15 @@ def mkdirs(paths):
     else:
         mkdir(paths)
 
+
 def mkdir(path):
     if not os.path.exists(path):
         os.makedirs(path)
-        
+
+
 def atoi(text):
     return int(text) if text.isdigit() else text
+
 
 def natural_keys(text):
     '''
@@ -154,8 +163,10 @@ def natural_keys(text):
     '''
     return [atoi(c) for c in re.split('(\d+)', text)]
 
+
 def natural_sort(items):
     items.sort(key=natural_keys)
+
 
 def str2bool(v):
     if v.lower() in ('yes', 'true', 't', 'y', '1'):
@@ -164,6 +175,7 @@ def str2bool(v):
         return False
     else:
         raise argparse.ArgumentTypeError('Boolean value expected.')
+
 
 def find_class_in_module(target_cls_name, module):
     target_cls_name = target_cls_name.replace('_', '').lower()
@@ -179,12 +191,14 @@ def find_class_in_module(target_cls_name, module):
 
     return cls
 
+
 def save_network(net, label, epoch, opt):
     save_filename = '%s_net_%s.pth' % (epoch, label)
     save_path = os.path.join(opt.checkpoints_dir, opt.name, save_filename)
     torch.save(net.cpu().state_dict(), save_path)
     if len(opt.gpu_ids) and torch.cuda.is_available():
         net.cuda()
+
 
 def load_network(net, label, epoch, opt):
     save_filename = '%s_net_%s.pth' % (epoch, label)
@@ -202,32 +216,33 @@ def load_network(net, label, epoch, opt):
 ###############################################################################
 def uint82bin(n, count=8):
     """returns the binary of integer n, count refers to amount of bits"""
-    return ''.join([str((n >> y) & 1) for y in range(count-1, -1, -1)])
+    return ''.join([str((n >> y) & 1) for y in range(count - 1, -1, -1)])
+
 
 def labelcolormap(N):
-    if N == 35: # cityscape
-        cmap = np.array([(  0,  0,  0), (  0,  0,  0), (  0,  0,  0), (  0,  0,  0), (  0,  0,  0), (111, 74,  0), ( 81,  0, 81),
-                     (128, 64,128), (244, 35,232), (250,170,160), (230,150,140), ( 70, 70, 70), (102,102,156), (190,153,153),
-                     (180,165,180), (150,100,100), (150,120, 90), (153,153,153), (153,153,153), (250,170, 30), (220,220,  0),
-                     (107,142, 35), (152,251,152), ( 70,130,180), (220, 20, 60), (255,  0,  0), (  0,  0,142), (  0,  0, 70),
-                     (  0, 60,100), (  0,  0, 90), (  0,  0,110), (  0, 80,100), (  0,  0,230), (119, 11, 32), (  0,  0,142)], 
-                    dtype=np.uint8)
+    if N == 35:  # cityscape
+        cmap = np.array([(0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (111, 74, 0), (81, 0, 81),
+                         (128, 64, 128), (244, 35, 232), (250, 170, 160), (230, 150, 140), (70, 70, 70), (102, 102, 156), (190, 153, 153),
+                         (180, 165, 180), (150, 100, 100), (150, 120, 90), (153, 153, 153), (153, 153, 153), (250, 170, 30), (220, 220, 0),
+                         (107, 142, 35), (152, 251, 152), (70, 130, 180), (220, 20, 60), (255, 0, 0), (0, 0, 142), (0, 0, 70),
+                         (0, 60, 100), (0, 0, 90), (0, 0, 110), (0, 80, 100), (0, 0, 230), (119, 11, 32), (0, 0, 142)],
+                        dtype=np.uint8)
     else:
         cmap = np.zeros((N, 3), dtype=np.uint8)
         for i in range(N):
             r, g, b = 0, 0, 0
-            id = i + 1 # let's give 0 a color
+            id = i + 1  # let's give 0 a color
             for j in range(7):
                 str_id = uint82bin(id)
-                r = r ^ (np.uint8(str_id[-1]) << (7-j))
-                g = g ^ (np.uint8(str_id[-2]) << (7-j))
-                b = b ^ (np.uint8(str_id[-3]) << (7-j))
+                r = r ^ (np.uint8(str_id[-1]) << (7 - j))
+                g = g ^ (np.uint8(str_id[-2]) << (7 - j))
+                b = b ^ (np.uint8(str_id[-3]) << (7 - j))
                 id = id >> 3
             cmap[i, 0] = r
             cmap[i, 1] = g
             cmap[i, 2] = b
 
-        if N == 182: # COCO        
+        if N == 182:  # COCO
             important_colors = {
                 'sea': (54, 62, 167),
                 'sky-other': (95, 219, 255),
@@ -240,8 +255,9 @@ def labelcolormap(N):
                 if name in important_colors:
                     color = important_colors[name]
                     cmap[i] = np.array(list(color))
-                                                     
+
     return cmap
+
 
 class Colorize(object):
     def __init__(self, n=35):
@@ -259,5 +275,3 @@ class Colorize(object):
             color_image[2][mask] = self.cmap[label][2]
 
         return color_image
-
-    

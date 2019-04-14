@@ -41,9 +41,6 @@ class Pix2pixDataset(BaseDataset):
 
         size = len(self.label_paths)
         self.dataset_size = size
-        # if opt.isTrain:
-        #    round_to_ngpus = (size // ngpus) * ngpus
-        #    self.dataset_size = round_to_ngpus
 
     def get_paths(self, opt):
         label_paths = []
