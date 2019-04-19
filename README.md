@@ -36,7 +36,7 @@ This code also requires the Synchronized-BatchNorm-PyTorch rep.
 ```
 cd models/networks/
 git clone https://github.com/vacancy/Synchronized-BatchNorm-PyTorch
-cp Synchronized-BatchNorm-PyTorch/sync_batchnorm . -rf
+cp -rf Synchronized-BatchNorm-PyTorch/sync_batchnorm .
 cd ../../
 ```
 
