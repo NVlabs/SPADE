@@ -54,7 +54,7 @@ There are different modes to load images by specifying `--preprocess_mode` along
 
 ## Generating Images Using Pretrained Model
 
-Once the dataset is ready. The result images can be generated using pretrained models.
+Once the dataset is ready, the result images can be generated using pretrained models.
 
 1. Download the tar of the pretrained models from the [Google Drive Folder](https://drive.google.com/file/d/12gvlTbMvUcJewQlSEaZdeb2CdOB-b8kQ/view?usp=sharing), save it in 'checkpoints/', and run
 
