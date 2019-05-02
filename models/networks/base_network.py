@@ -3,9 +3,9 @@ Copyright (C) 2019 NVIDIA Corporation.  All rights reserved.
 Licensed under the CC BY-NC-SA 4.0 license (https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode).
 """
 
-import torch
 import torch.nn as nn
 from torch.nn import init
+
 
 class BaseNetwork(nn.Module):
     def __init__(self):
@@ -44,7 +44,7 @@ class BaseNetwork(nn.Module):
                     init.kaiming_normal_(m.weight.data, a=0, mode='fan_in')
                 elif init_type == 'orthogonal':
                     init.orthogonal_(m.weight.data, gain=gain)
-                elif init_type == 'none': # uses pytorch's default init method
+                elif init_type == 'none':  # uses pytorch's default init method
                     m.reset_parameters()
                 else:
                     raise NotImplementedError('initialization method [%s] is not implemented' % init_type)
@@ -57,4 +57,3 @@ class BaseNetwork(nn.Module):
         for m in self.children():
             if hasattr(m, 'init_weights'):
                 m.init_weights(init_type, gain)
-        

@@ -7,6 +7,7 @@ import os.path
 from data.pix2pix_dataset import Pix2pixDataset
 from data.image_folder import make_dataset
 
+
 class CocoDataset(Pix2pixDataset):
 
     @staticmethod
@@ -32,7 +33,7 @@ class CocoDataset(Pix2pixDataset):
 
         label_dir = os.path.join(root, '%s_label' % phase)
         label_paths = make_dataset(label_dir, recursive=False, read_cache=True)
-        
+
         if not opt.coco_no_portraits and opt.isTrain:
             label_portrait_dir = os.path.join(root, '%s_label_portrait' % phase)
             if os.path.isdir(label_portrait_dir):
@@ -47,7 +48,7 @@ class CocoDataset(Pix2pixDataset):
             if os.path.isdir(image_portrait_dir):
                 image_portrait_paths = make_dataset(image_portrait_dir, recursive=False, read_cache=True)
                 image_paths += image_portrait_paths
-        
+
         if not opt.no_instance:
             instance_dir = os.path.join(root, '%s_inst' % phase)
             instance_paths = make_dataset(instance_dir, recursive=False, read_cache=True)
@@ -62,4 +63,3 @@ class CocoDataset(Pix2pixDataset):
             instance_paths = []
 
         return label_paths, image_paths, instance_paths
-

@@ -48,4 +48,3 @@ class CustomDataset(Pix2pixDataset):
         assert len(label_paths) == len(image_paths), "The #images in %s and %s do not match. Is there something wrong?"
 
         return label_paths, image_paths, instance_paths
-

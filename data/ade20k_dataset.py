@@ -3,12 +3,9 @@ Copyright (C) 2019 NVIDIA Corporation.  All rights reserved.
 Licensed under the CC BY-NC-SA 4.0 license (https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode).
 """
 
-import os.path
 from data.pix2pix_dataset import Pix2pixDataset
 from data.image_folder import make_dataset
-import scipy.io
-import numpy as np
-from PIL import Image
+
 
 class ADE20KDataset(Pix2pixDataset):
 
@@ -33,7 +30,7 @@ class ADE20KDataset(Pix2pixDataset):
         root = opt.dataroot
         phase = 'val' if opt.phase == 'test' else 'train'
 
-        all_images = make_dataset(root, recursive=True, read_cache=False, write_cache=False)        
+        all_images = make_dataset(root, recursive=True, read_cache=False, write_cache=False)
         image_paths = []
         label_paths = []
         for p in all_images:
@@ -44,14 +41,13 @@ class ADE20KDataset(Pix2pixDataset):
             elif p.endswith('.png'):
                 label_paths.append(p)
 
-        instance_paths = [] # don't use instance map for ade20k
+        instance_paths = []  # don't use instance map for ade20k
 
         return label_paths, image_paths, instance_paths
 
-    ## In ADE20k, 'unknown' label is of value 0.
-    ## Change the 'unknown' label to 255 to match other datasets.
+    # In ADE20k, 'unknown' label is of value 0.
+    # Change the 'unknown' label to the last label to match other datasets.
     def postprocess(self, input_dict):
         label = input_dict['label']
         label = label - 1
         label[label == -1] = self.opt.label_nc
-
