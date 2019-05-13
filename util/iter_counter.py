@@ -33,8 +33,10 @@ class IterationCounter():
     def training_epochs(self):
         return range(self.first_epoch, self.total_epochs + 1)
 
-    def record_epoch_start(self, epoch):
+    def record_epoch_start(self, epoch, clear_iter=True):
         self.epoch_start_time = time.time()
+        if clear_iter:
+            self.epoch_iter = 0
         self.last_iter_time = time.time()
         self.current_epoch = epoch
 

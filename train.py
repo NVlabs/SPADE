@@ -29,10 +29,14 @@ iter_counter = IterationCounter(opt, len(dataloader) * opt.batchSize)
 # create tool for visualization
 visualizer = Visualizer(opt)
 
+clear_iter = False
 for epoch in iter_counter.training_epochs():
-    iter_counter.record_epoch_start(epoch)
+    iter_counter.record_epoch_start(epoch, clear_iter)
+    clear_iter = True
+
+    start_batch_idx = iter_counter.epoch_iter // opt.batchSize
     for i, data_i in enumerate(dataloader):
-        if i < iter_counter.epoch_iter // opt.batchSize:
+        if i < start_batch_idx:
             continue
 
         iter_counter.record_one_iteration()
