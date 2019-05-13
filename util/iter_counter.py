@@ -35,7 +35,6 @@ class IterationCounter():
 
     def record_epoch_start(self, epoch):
         self.epoch_start_time = time.time()
-        self.epoch_iter = 0
         self.last_iter_time = time.time()
         self.current_epoch = epoch
 
