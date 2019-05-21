@@ -33,6 +33,7 @@ class ConvEncoder(BaseNetwork):
         self.fc_var = nn.Linear(ndf * 8 * s0 * s0, 256)
 
         self.actvn = nn.LeakyReLU(0.2, False)
+        self.opt = opt
 
     def forward(self, x):
         if x.size(2) != 256 or x.size(3) != 256:
