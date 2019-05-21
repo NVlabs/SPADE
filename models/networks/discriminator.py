@@ -67,7 +67,7 @@ class MultiscaleDiscriminator(BaseNetwork):
 class NLayerDiscriminator(BaseNetwork):
     @staticmethod
     def modify_commandline_options(parser, is_train):
-        parser.add_argument('--n_layers_D', type=int, default=3,
+        parser.add_argument('--n_layers_D', type=int, default=4,
                             help='# layers in each discriminator')
         return parser
 
