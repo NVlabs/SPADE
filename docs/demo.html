@@ -3,10 +3,12 @@
 function getRandomInt(max) { return Math.floor(Math.random() * Math.floor(max)); }
 var random_number = getRandomInt(1000000000);
 
-if (random_number % 3 == 0){
+if (random_number % 4 == 0){
 	window.location.replace("http://3.16.206.30/");
-} else if (random_number % 3 == 1){
+} else if (random_number % 4 == 1){
 	window.location.replace("http://52.12.58.174/");
+} else if (random_number % 4 == 2){
+	window.location.replace("http://54.71.84.47/");
 } else {
 	window.location.replace("http://18.234.114.149/");
 }
