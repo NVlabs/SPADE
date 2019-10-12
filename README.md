@@ -104,8 +104,12 @@ Testing is similar to testing pretrained models.
 ```bash
 python test.py --name [name_of_experiment] --dataset_mode [dataset_mode] --dataroot [path_to_dataset]
 ```
-
 Use `--results_dir` to specify the output directory. `--how_many` will specify the maximum number of images to generate. By default, it loads the latest checkpoint. It can be changed using `--which_epoch`.
+
+Testing the code on single label file on adek20k data format. 
+```bash
+python test_image.py --name ade20k_pretrained --dataset_mode ade20k --gpu_ids -1 
+```
 
 ## Code Structure
 
