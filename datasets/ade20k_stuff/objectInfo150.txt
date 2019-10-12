@@ -1,0 +1,151 @@
+Idx	Ratio	Train	Val	Name
+1	0.1576	11664	1172	wall
+2	0.1072	6046	612	building, edifice
+3	0.0878	8265	796	sky
+4	0.0621	9336	917	floor, flooring
+5	0.0480	6678	641	tree
+6	0.0450	6604	643	ceiling
+7	0.0398	4023	408	road, route
+8	0.0231	1906	199	bed 
+9	0.0198	4688	460	windowpane, window 
+10	0.0183	2423	225	grass
+11	0.0181	2874	294	cabinet
+12	0.0166	3068	310	sidewalk, pavement
+13	0.0160	5075	526	person, individual, someone, somebody, mortal, soul
+14	0.0151	1804	190	earth, ground
+15	0.0118	6666	796	door, double door
+16	0.0110	4269	411	table
+17	0.0109	1691	160	mountain, mount
+18	0.0104	3999	441	plant, flora, plant life
+19	0.0104	2149	217	curtain, drape, drapery, mantle, pall
+20	0.0103	3261	318	chair
+21	0.0098	3164	306	car, auto, automobile, machine, motorcar
+22 	0.0074	709	75	water
+23	0.0067	3296	315	painting, picture
+24 	0.0065	1191	106	sofa, couch, lounge
+25 	0.0061	1516	162	shelf
+26 	0.0060	667	69	house
+27 	0.0053	651	57	sea
+28	0.0052	1847	224	mirror
+29	0.0046	1158	128	rug, carpet, carpeting
+30	0.0044	480	44	field
+31	0.0044	1172	98	armchair
+32	0.0044	1292	184	seat
+33	0.0033	1386	138	fence, fencing
+34	0.0031	698	61	desk
+35	0.0030	781	73	rock, stone
+36	0.0027	380	43	wardrobe, closet, press
+37	0.0026	3089	302	lamp
+38	0.0024	404	37	bathtub, bathing tub, bath, tub
+39	0.0024	804	99	railing, rail
+40	0.0023	1453	153	cushion
+41	0.0023	411	37	base, pedestal, stand
+42	0.0022	1440	162	box
+43	0.0022	800	77	column, pillar
+44	0.0020	2650	298	signboard, sign
+45	0.0019	549	46	chest of drawers, chest, bureau, dresser
+46	0.0019	367	36	counter
+47	0.0018	311	30	sand
+48	0.0018	1181	122	sink
+49	0.0018	287	23	skyscraper
+50	0.0018	468	38	fireplace, hearth, open fireplace
+51	0.0018	402	43	refrigerator, icebox
+52	0.0018	130	12	grandstand, covered stand
+53	0.0018	561	64	path
+54	0.0017	880	102	stairs, steps
+55	0.0017	86	12	runway
+56	0.0017	172	11	case, display case, showcase, vitrine
+57	0.0017	198	18	pool table, billiard table, snooker table
+58	0.0017	930	109	pillow
+59	0.0015	139	18	screen door, screen
+60	0.0015	564	52	stairway, staircase
+61	0.0015	320	26	river
+62	0.0015	261	29	bridge, span
+63	0.0014	275	22	bookcase
+64	0.0014	335	60	blind, screen
+65	0.0014	792	75	coffee table, cocktail table
+66	0.0014	395	49	toilet, can, commode, crapper, pot, potty, stool, throne
+67	0.0014	1309	138	flower
+68	0.0013	1112	113	book
+69	0.0013	266	27	hill
+70	0.0013	659	66	bench
+71	0.0012	331	31	countertop
+72	0.0012	531	56	stove, kitchen stove, range, kitchen range, cooking stove
+73	0.0012	369	36	palm, palm tree
+74	0.0012	144	9	kitchen island
+75	0.0011	265	29	computer, computing machine, computing device, data processor, electronic computer, information processing system
+76	0.0010	324	33	swivel chair
+77	0.0009	304	27	boat
+78	0.0009	170	20	bar
+79	0.0009	68	6	arcade machine
+80	0.0009	65	8	hovel, hut, hutch, shack, shanty
+81	0.0009	248	25	bus, autobus, coach, charabanc, double-decker, jitney, motorbus, motorcoach, omnibus, passenger vehicle
+82	0.0008	492	49	towel
+83	0.0008	2510	269	light, light source
+84	0.0008	440	39	truck, motortruck
+85	0.0008	147	18	tower
+86	0.0008	583	56	chandelier, pendant, pendent
+87	0.0007	533	61	awning, sunshade, sunblind
+88	0.0007	1989	239	streetlight, street lamp
+89	0.0007	71	5	booth, cubicle, stall, kiosk
+90	0.0007	618	53	television receiver, television, television set, tv, tv set, idiot box, boob tube, telly, goggle box
+91	0.0007	135	12	airplane, aeroplane, plane
+92	0.0007	83	5	dirt track
+93	0.0007	178	17	apparel, wearing apparel, dress, clothes
+94	0.0006	1003	104	pole
+95	0.0006	182	12	land, ground, soil
+96	0.0006	452	50	bannister, banister, balustrade, balusters, handrail
+97	0.0006	42	6	escalator, moving staircase, moving stairway
+98	0.0006	307	31	ottoman, pouf, pouffe, puff, hassock
+99	0.0006	965	114	bottle
+100	0.0006	117	13	buffet, counter, sideboard
+101	0.0006	354	35	poster, posting, placard, notice, bill, card
+102	0.0006	108	9	stage
+103	0.0006	557	55	van
+104	0.0006	52	4	ship
+105	0.0005	99	5	fountain
+106	0.0005	57	4	conveyer belt, conveyor belt, conveyer, conveyor, transporter
+107	0.0005	292	31	canopy
+108	0.0005	77	9	washer, automatic washer, washing machine
+109	0.0005	340	38	plaything, toy
+110	0.0005	66	3	swimming pool, swimming bath, natatorium
+111	0.0005	465	49	stool
+112	0.0005	50	4	barrel, cask
+113	0.0005	622	75	basket, handbasket
+114	0.0005	80	9	waterfall, falls
+115	0.0005	59	3	tent, collapsible shelter
+116	0.0005	531	72	bag
+117	0.0005	282	30	minibike, motorbike
+118	0.0005	73	7	cradle
+119	0.0005	435	44	oven
+120	0.0005	136	25	ball
+121	0.0005	116	24	food, solid food
+122	0.0004	266	31	step, stair
+123	0.0004	58	12	tank, storage tank
+124	0.0004	418	83	trade name, brand name, brand, marque
+125	0.0004	319	43	microwave, microwave oven
+126	0.0004	1193	139	pot, flowerpot
+127	0.0004	97	23	animal, animate being, beast, brute, creature, fauna
+128	0.0004	347	36	bicycle, bike, wheel, cycle 
+129	0.0004	52	5	lake
+130	0.0004	246	22	dishwasher, dish washer, dishwashing machine
+131	0.0004	108	13	screen, silver screen, projection screen
+132	0.0004	201	30	blanket, cover
+133	0.0004	285	21	sculpture
+134	0.0004	268	27	hood, exhaust hood
+135	0.0003	1020	108	sconce
+136	0.0003	1282	122	vase
+137	0.0003	528	65	traffic light, traffic signal, stoplight
+138	0.0003	453	57	tray
+139	0.0003	671	100	ashcan, trash can, garbage can, wastebin, ash bin, ash-bin, ashbin, dustbin, trash barrel, trash bin
+140	0.0003	397	44	fan
+141	0.0003	92	8	pier, wharf, wharfage, dock
+142	0.0003	228	18	crt screen
+143	0.0003	570	59	plate
+144	0.0003	217	22	monitor, monitoring device
+145	0.0003	206	19	bulletin board, notice board
+146	0.0003	130	14	shower
+147	0.0003	178	28	radiator
+148	0.0002	504	57	glass, drinking glass
+149	0.0002	775	96	clock
+150	0.0002	421	56	flag
