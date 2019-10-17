@@ -19,6 +19,7 @@ class CityscapesDataset(Pix2pixDataset):
         parser.set_defaults(display_winsize=512)
         parser.set_defaults(label_nc=35)
         parser.set_defaults(aspect_ratio=2.0)
+        parser.set_defaults(batchSize=16)
         opt, _ = parser.parse_known_args()
         if hasattr(opt, 'num_upsampling_layers'):
             parser.set_defaults(num_upsampling_layers='more')
