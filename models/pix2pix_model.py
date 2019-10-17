@@ -66,11 +66,10 @@ class Pix2PixModel(torch.nn.Module):
         if opt.isTrain:
             D_params = list(self.netD.parameters())
 
+        beta1, beta2 = opt.beta1, opt.beta2
         if opt.no_TTUR:
-            beta1, beta2 = opt.beta1, opt.beta2
             G_lr, D_lr = opt.lr, opt.lr
         else:
-            beta1, beta2 = 0, 0.9
             G_lr, D_lr = opt.lr / 2, opt.lr * 2
 
         optimizer_G = torch.optim.Adam(G_params, lr=G_lr, betas=(beta1, beta2))

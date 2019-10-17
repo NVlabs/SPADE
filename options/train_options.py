@@ -24,8 +24,15 @@ class TrainOptions(BaseOptions):
         parser.add_argument('--niter', type=int, default=50, help='# of iter at starting learning rate. This is NOT the total #epochs. Totla #epochs is niter + niter_decay')
         parser.add_argument('--niter_decay', type=int, default=0, help='# of iter to linearly decay learning rate to zero')
         parser.add_argument('--optimizer', type=str, default='adam')
-        parser.add_argument('--beta1', type=float, default=0.5, help='momentum term of adam')
-        parser.add_argument('--beta2', type=float, default=0.999, help='momentum term of adam')
+        parser.add_argument('--beta1', type=float, default=0.0, help='momentum term of adam')
+        parser.add_argument('--beta2', type=float, default=0.9, help='momentum term of adam')
+        parser.add_argument('--no_TTUR', action='store_true', help='Use TTUR training scheme')
+
+        # the default values for beta1 and beta2 differ by TTUR option
+        opt, _ = parser.parse_known_args()
+        if opt.no_TTUR:
+            parser.set_defaults(beta1=0.5, beta2=0.999)
+
         parser.add_argument('--lr', type=float, default=0.0002, help='initial learning rate for adam')
         parser.add_argument('--D_steps_per_G', type=int, default=1, help='number of discriminator iterations per generator iterations.')
 
@@ -37,7 +44,6 @@ class TrainOptions(BaseOptions):
         parser.add_argument('--no_vgg_loss', action='store_true', help='if specified, do *not* use VGG feature matching loss')
         parser.add_argument('--gan_mode', type=str, default='hinge', help='(ls|original|hinge)')
         parser.add_argument('--netD', type=str, default='multiscale', help='(n_layers|multiscale|image)')
-        parser.add_argument('--no_TTUR', action='store_true', help='Use TTUR training scheme')
         parser.add_argument('--lambda_kld', type=float, default=0.05)
         self.isTrain = True
         return parser
