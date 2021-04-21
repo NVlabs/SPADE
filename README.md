@@ -17,7 +17,9 @@ Copyright (C) 2019 NVIDIA Corporation.
 All rights reserved.
 Licensed under the [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode) (**Attribution-NonCommercial-ShareAlike 4.0 International**)
 
-The code is released for academic research use only. For commercial use, please contact [researchinquiries@nvidia.com](researchinquiries@nvidia.com).
+The code is released for academic research use only. For commercial use or business inquiries, please contact [researchinquiries@nvidia.com](researchinquiries@nvidia.com).
+
+For press and other inquiries, please contact [Hector Marinez](hmarinez@nvidia.com)
 
 ## Installation
 
