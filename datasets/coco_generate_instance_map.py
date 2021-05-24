@@ -38,7 +38,7 @@ for ix, id in enumerate(imgIds):
     filename = img_dict["file_name"].replace("jpg", "png")
     label_name = os.path.join(opt.input_label_dir, filename)
     inst_name = os.path.join(opt.output_instance_dir, filename)
-    img = io.imread(label_name, as_grey=True)
+    img = io.imread(label_name, as_gray=True)
 
     annIds = coco.getAnnIds(imgIds=id, catIds=[], iscrowd=None)
     anns = coco.loadAnns(annIds)
