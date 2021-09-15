@@ -26,6 +26,8 @@ def get_nonspade_norm_layer(opt, norm_type='instance'):
         if norm_type.startswith('spectral'):
             layer = spectral_norm(layer)
             subnorm_type = norm_type[len('spectral'):]
+        else:
+            subnorm_type = norm_type
 
         if subnorm_type == 'none' or len(subnorm_type) == 0:
             return layer
