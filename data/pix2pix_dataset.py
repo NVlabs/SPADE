@@ -29,7 +29,6 @@ class Pix2pixDataset(BaseDataset):
         label_paths = label_paths[:opt.max_dataset_size]
         image_paths = image_paths[:opt.max_dataset_size]
         instance_paths = instance_paths[:opt.max_dataset_size]
-
         if not opt.no_pairing_check:
             for path1, path2 in zip(label_paths, image_paths):
                 assert self.paths_match(path1, path2), \
