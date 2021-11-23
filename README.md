@@ -143,3 +143,4 @@ If you use this code for your research, please cite our papers.
 
 ## Acknowledgments
 This code borrows heavily from pix2pixHD. We thank Jiayuan Mao for his Synchronized Batch Normalization code.
+[![Run on Repl.it](https://repl.it/badge/github/NVlabs/SPADE)](https://repl.it/github/NVlabs/SPADE)
