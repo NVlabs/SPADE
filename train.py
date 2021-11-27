@@ -10,6 +10,7 @@ import data
 from util.iter_counter import IterationCounter
 from util.visualizer import Visualizer
 from trainers.pix2pix_trainer import Pix2PixTrainer
+import torch
 
 # parse options
 opt = TrainOptions().parse()
@@ -33,7 +34,9 @@ for epoch in iter_counter.training_epochs():
     iter_counter.record_epoch_start(epoch)
     for i, data_i in enumerate(dataloader, start=iter_counter.epoch_iter):
         iter_counter.record_one_iteration()
-
+#         torch.save(data_i, './TTTT/data_i.pt')#수정
+#         print('TTTT/data_i.pt save...')#수정
+#         break# 수정
         # Training
         # train generator
         if i % opt.D_steps_per_G == 0:

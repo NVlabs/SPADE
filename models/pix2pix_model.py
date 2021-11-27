@@ -211,6 +211,11 @@ class Pix2PixModel(torch.nn.Module):
     # for each fake and real image.
 
     def discriminate(self, input_semantics, fake_image, real_image):
+#         print('-----------------------------------')#수정
+#         print(input_semantics.size(), fake_image.size())#수정
+#         print('-----------------------------------')#수정
+#         torch.save(input_semantics, './TTTT/input_semantics.pt')#수정
+#         torch.save(fake_image, './TTTT/fake_image.pt')#수정
         fake_concat = torch.cat([input_semantics, fake_image], dim=1)
         real_concat = torch.cat([input_semantics, real_image], dim=1)
 
