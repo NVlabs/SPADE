@@ -72,3 +72,4 @@ for epoch in iter_counter.training_epochs():
         trainer.save(epoch)
 
 print('Training was successfully finished.')
+

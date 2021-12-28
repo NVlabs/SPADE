@@ -106,13 +106,18 @@ class Pix2PixModel(torch.nn.Module):
     # |data|: dictionary of the input data
 
     def preprocess_input(self, data):
+        if self.opt.label_nc == 0:
+            if self.use_gpu():
+                return data['label'].cuda(), data['image'].cuda()
+            else:
+                return data['label'], data['image']
         # move to GPU and change data types
         data['label'] = data['label'].long()
         if self.use_gpu():
             data['label'] = data['label'].cuda()
             data['instance'] = data['instance'].cuda()
             data['image'] = data['image'].cuda()
-
+            
         # create one-hot label map
         label_map = data['label']
         bs, _, h, w = label_map.size()
