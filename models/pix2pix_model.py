@@ -118,9 +118,17 @@ class Pix2PixModel(torch.nn.Module):
         bs, _, h, w = label_map.size()
         nc = self.opt.label_nc + 1 if self.opt.contain_dontcare_label \
             else self.opt.label_nc
+        
         input_label = self.FloatTensor(bs, nc, h, w).zero_()
+        
+#         print('-----------------------------------')#수정
+#         print(input_label.size(), label_map.size())#수정
+#         print('-----------------------------------')#수정
+#         torch.save(input_label, './TTTT/input_label.pt')#수정
+#         torch.save(label_map, './TTTT/label_map.pt')#수정
+        
         input_semantics = input_label.scatter_(1, label_map, 1.0)
-
+        
         # concatenate instance map if it exists
         if not self.opt.no_instance:
             inst_map = data['instance']
@@ -203,6 +211,11 @@ class Pix2PixModel(torch.nn.Module):
     # for each fake and real image.
 
     def discriminate(self, input_semantics, fake_image, real_image):
+#         print('-----------------------------------')#수정
+#         print(input_semantics.size(), fake_image.size())#수정
+#         print('-----------------------------------')#수정
+#         torch.save(input_semantics, './TTTT/input_semantics.pt')#수정
+#         torch.save(fake_image, './TTTT/fake_image.pt')#수정
         fake_concat = torch.cat([input_semantics, fake_image], dim=1)
         real_concat = torch.cat([input_semantics, real_image], dim=1)
 
