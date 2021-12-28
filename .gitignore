@@ -5,3 +5,4 @@ results/
 *.zip
 *.pkl
 *.pyc
+.ipynb_checkpoints/
