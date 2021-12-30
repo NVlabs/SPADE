@@ -102,7 +102,10 @@ class GANLoss(nn.Module):
 class VGGLoss(nn.Module):
     def __init__(self, gpu_ids):
         super(VGGLoss, self).__init__()
-        self.vgg = VGG19().cuda()
+        if len(gpu_ids):
+            self.vgg = VGG19().cuda()
+        else:
+            self.vgg = VGG19()
         self.criterion = nn.L1Loss()
         self.weights = [1.0 / 32, 1.0 / 16, 1.0 / 8, 1.0 / 4, 1.0]
 

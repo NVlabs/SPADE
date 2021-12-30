@@ -31,12 +31,15 @@ class BaseOptions():
 
         # input/output sizes
         parser.add_argument('--batchSize', type=int, default=1, help='input batch size')
-        parser.add_argument('--preprocess_mode', type=str, default='scale_width_and_crop', help='scaling and cropping of images at load time.', choices=("resize_and_crop", "crop", "scale_width", "scale_width_and_crop", "scale_shortside", "scale_shortside_and_crop", "fixed", "none"))
-        parser.add_argument('--load_size', type=int, default=1024, help='Scale images to this size. The final image will be cropped to --crop_size.')
-        parser.add_argument('--crop_size', type=int, default=512, help='Crop to the width of crop_size (after initially scaling the images to load_size.)')
+        parser.add_argument('--preprocess_mode', type=str, default='resize_and_crop', help='scaling and cropping of images at load time.', choices=("resize", "crop", "scale_width", "scale_width_and_crop", "scale_shortside", "scale_shortside_and_crop", "fixed", "none"))
+        parser.add_argument('--load_size', type=int, default=320, help='Scale images to this size. The final image will be cropped to --crop_size.')
+        parser.add_argument('--crop_size', type=int, default=320, help='Crop to the width of crop_size (after initially scaling the images to load_size.)')
         parser.add_argument('--aspect_ratio', type=float, default=1.0, help='The ratio width/height. The final height of the load image will be crop_size/aspect_ratio')
         parser.add_argument('--label_nc', type=int, default=182, help='# of input label classes without unknown class. If you have unknown class as class label, specify --contain_dopntcare_label.')
         parser.add_argument('--contain_dontcare_label', action='store_true', help='if the label map contains dontcare label (dontcare=255)')
+        parser.add_argument(
+            "--input_nc", type=int, default=3, help="# of input image channels"
+        )
         parser.add_argument('--output_nc', type=int, default=3, help='# of output image channels')
 
         # for setting inputs
@@ -156,9 +159,12 @@ class BaseOptions():
 
         # Set semantic_nc based on the option.
         # This will be convenient in many places
-        opt.semantic_nc = opt.label_nc + \
-            (1 if opt.contain_dontcare_label else 0) + \
-            (0 if opt.no_instance else 1)
+        if opt.label_nc == 0:
+            opt.semantic_nc = opt.input_nc
+        else:
+            opt.semantic_nc = opt.label_nc + \
+                (1 if opt.contain_dontcare_label else 0) + \
+                (0 if opt.no_instance else 1)
 
         # set gpu ids
         str_ids = opt.gpu_ids.split(',')

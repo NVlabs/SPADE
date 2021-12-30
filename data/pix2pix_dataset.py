@@ -4,6 +4,7 @@ Licensed under the CC BY-NC-SA 4.0 license (https://creativecommons.org/licenses
 """
 
 from data.base_dataset import BaseDataset, get_params, get_transform
+from data.image_folder import make_dataset
 from PIL import Image
 import util.util as util
 import os
@@ -43,10 +44,22 @@ class Pix2pixDataset(BaseDataset):
         self.dataset_size = size
 
     def get_paths(self, opt):
-        label_paths = []
-        image_paths = []
-        instance_paths = []
-        assert False, "A subclass of Pix2pixDataset must override self.get_paths(self, opt)"
+        phase = 'train' if opt.isTrain else 'test'
+        label_dir = os.path.join(opt.dataroot, f'{phase}_A')
+        label_paths = make_dataset(label_dir, recursive=False, read_cache=True)
+
+        image_dir = os.path.join(opt.dataroot, f'{phase}_B')
+        image_paths = make_dataset(image_dir, recursive=False, read_cache=True)
+        
+        # label_paths = image_paths = list(set(label_paths) & set(image_paths))
+
+        if opt.label_nc > 0:
+            instance_dir = os.path.join(opt.dataroot, f'{phase}_inst')
+            instance_paths = make_dataset(instance_dir, recursive=False, read_cache=True)
+        else:
+            instance_paths = []
+
+        assert len(label_paths) == len(image_paths), "The #images in %s and %s do not match. Is there something wrong?"
         return label_paths, image_paths, instance_paths
 
     def paths_match(self, path1, path2):
@@ -58,10 +71,13 @@ class Pix2pixDataset(BaseDataset):
         # Label Image
         label_path = self.label_paths[index]
         label = Image.open(label_path)
+        label = label.convert('RGB')
         params = get_params(self.opt, label.size)
-        transform_label = get_transform(self.opt, params, method=Image.NEAREST, normalize=False)
-        label_tensor = transform_label(label) * 255.0
-        label_tensor[label_tensor == 255] = self.opt.label_nc  # 'unknown' is opt.label_nc
+        transform_label = get_transform(self.opt, params)
+        # transform_label = get_transform(self.opt, params, method=Image.NEAREST, normalize=False)
+        # label_tensor = transform_label(label) * 255.0
+        # label_tensor[label_tensor == 255] = self.opt.label_nc  # 'unknown' is opt.label_nc
+        label_tensor = transform_label(label)
 
         # input image (real images)
         image_path = self.image_paths[index]
@@ -102,3 +118,4 @@ class Pix2pixDataset(BaseDataset):
 
     def __len__(self):
         return self.dataset_size
+

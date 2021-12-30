@@ -4,6 +4,7 @@ Licensed under the CC BY-NC-SA 4.0 license (https://creativecommons.org/licenses
 """
 
 import sys
+import numpy as np
 from collections import OrderedDict
 from options.train_options import TrainOptions
 import data
@@ -24,14 +25,23 @@ dataloader = data.create_dataloader(opt)
 trainer = Pix2PixTrainer(opt)
 
 # create tool for counting iterations
-iter_counter = IterationCounter(opt, len(dataloader))
+iter_counter = IterationCounter(opt, len(dataloader) * opt.batchSize)
 
 # create tool for visualization
 visualizer = Visualizer(opt)
 
+
+clear_iter = False
 for epoch in iter_counter.training_epochs():
-    iter_counter.record_epoch_start(epoch)
-    for i, data_i in enumerate(dataloader, start=iter_counter.epoch_iter):
+    iter_counter.record_epoch_start(epoch, clear_iter)
+    clear_iter = True
+
+    start_batch_idx = iter_counter.epoch_iter // opt.batchSize
+    
+    for i, data_i in enumerate(dataloader):
+        if i < start_batch_idx:
+            continue
+
         iter_counter.record_one_iteration()
 
         # Training
@@ -60,7 +70,7 @@ for epoch in iter_counter.training_epochs():
                   (epoch, iter_counter.total_steps_so_far))
             trainer.save('latest')
             iter_counter.record_current_iter()
-
+        
     trainer.update_learning_rate(epoch)
     iter_counter.record_epoch_end()
 
@@ -70,5 +80,6 @@ for epoch in iter_counter.training_epochs():
               (epoch, iter_counter.total_steps_so_far))
         trainer.save('latest')
         trainer.save(epoch)
-
+        
 print('Training was successfully finished.')
+

@@ -129,7 +129,10 @@ class Visualizer():
         for key, t in visuals.items():
             tile = self.opt.batchSize > 8
             if 'input_label' == key:
-                t = util.tensor2label(t, self.opt.label_nc + 2, tile=tile)
+                if self.opt.label_nc == 0:
+                    t = util.tensor2im(t, tile=tile)
+                else:
+                    t = util.tensor2label(t, self.opt.label_nc + 2, tile=tile)
             else:
                 t = util.tensor2im(t, tile=tile)
             visuals[key] = t
