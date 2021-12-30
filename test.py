@@ -11,6 +11,8 @@ from options.test_options import TestOptions
 from models.pix2pix_model import Pix2PixModel
 from util.visualizer import Visualizer
 from util import html
+from util.util import tensor2im
+from PIL import Image
 
 opt = TestOptions().parse()
 
@@ -34,12 +36,16 @@ for i, data_i in enumerate(dataloader):
         break
 
     generated = model(data_i, mode='inference')
-
+    synthesized_image = tensor2im(generated)
     img_path = data_i['path']
-    for b in range(generated.shape[0]):
+    for b in range(synthesized_image.shape[0]):
         print('process image... %s' % img_path[b])
         visuals = OrderedDict([('input_label', data_i['label'][b]),
                                ('synthesized_image', generated[b])])
         visualizer.save_images(webpage, visuals, img_path[b:b + 1])
+        save_image_path = os.path.join(
+            opt.results_dir, os.path.basename(img_path[b]))
+        Image.fromarray(synthesized_image[b]).save(save_image_path)
 
 webpage.save()
+
